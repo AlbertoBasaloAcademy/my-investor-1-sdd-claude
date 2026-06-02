@@ -1,0 +1,110 @@
+/* @theme ab */
+
+@import 'default';
+@import url("https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Geist+Mono:wght@100..900&display=swap");
+
+:root {
+  font-family: "Geist", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 32px;
+
+  /* Light Theme Base Colors */
+  --ab-ice-white: #f8fafc;
+  --ab-light-surface: #f1f5f9;
+
+  /* Primary Accent - Bioluminescent Cyan */
+  --ab-cyan-primary: #00f2ff;
+  --ab-cyan-vivid: #33f5ff;
+  --ab-cyan-deep: #00c4cc;
+
+  /* Secondary Accent - Acid Mint */
+  --ab-mint-primary: #80ffdb;
+  --ab-mint-deep: #5cecc6;
+
+  /* Neutral Accents */
+  --ab-chrome: #a8dadc;
+  --ab-slate: #457b9d;
+
+  background-color: var(--ab-ice-white);
+  color: var(--ab-slate);
+}
+
+h1,
+h2,
+h3,
+h4 {
+  color: var(--ab-slate);
+  border-bottom: var(--ab-cyan-deep) 2px solid;
+  padding-top: 10px;
+}
+
+h2 {
+  text-transform: uppercase;
+}
+
+h3 {
+  border-bottom: var(--ab-cyan-deep) 2px solid;
+}
+
+a {
+  color: var(--ab-cyan-deep);
+}
+
+footer {
+  color: var(--ab-chrome);
+  font-size: 0.8em;
+  text-align: center;
+  margin-top: 20px;
+  padding-top: 10px;
+  border-top: 1px solid var(--ab-chrome);
+}
+
+pre {
+  background-color: var(--ab-slate);
+  color: var(--ab-ice-white);
+  font-family: "Geist Mono", ui-monospace, "Cascadia Mono", "Segoe UI Mono", Consolas,
+    "Liberation Mono", Menlo, Monaco, monospace;
+}
+
+blockquote {
+  color: var(--ab-slate);
+  border-left: 4px solid var(--ab-cyan-deep);
+  margin-top: 10px;
+  font-size: 16px;
+  font-style: italic;   
+  padding-left: 15px;
+}
+
+ul {
+  list-style: none;
+  position: relative;
+  padding: 0;
+  margin: 0;
+}
+
+ol {
+  list-style-type: decimal;
+}
+
+li {
+  padding-left: 1.5em;
+  font-family: Consolas, monospace;
+  font-size: 24px;
+}
+
+li:before {
+  position: absolute;
+  content: "➢";
+  color: var(--ab-cyan-deep);
+  left: 4px;
+}
+
+
+table th {
+  border-color: var(--ab-chrome);
+  border-width: 1px;
+  border-style: solid;
+}
+
+table tr:nth-child(even) {
+  background-color: var(--ab-light-surface);
+}
