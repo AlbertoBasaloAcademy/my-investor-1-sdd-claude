@@ -1,0 +1,14 @@
+# Maven build output
+target/
+
+# SQLite database (provisioned at runtime)
+data/
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+
+# IDE / OS
+.idea/
+*.iml
+.DS_Store

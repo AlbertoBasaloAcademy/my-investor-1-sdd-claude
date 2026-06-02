@@ -1,0 +1,117 @@
+.health-card {
+  width: min(100%, 32rem);
+  padding: var(--space-gutter);
+  background: rgba(52, 52, 58, 0.2);
+  border: 1px solid rgba(227, 225, 233, 0.1);
+  border-radius: var(--radius-xl);
+  backdrop-filter: blur(20px);
+  box-shadow: 0 0 60px rgba(0, 218, 243, 0.08);
+}
+
+.health-card--down {
+  border-color: rgba(255, 180, 171, 0.4);
+  box-shadow: 0 0 60px rgba(147, 0, 10, 0.2);
+}
+
+.health-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-gutter);
+}
+
+.health-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--color-primary);
+}
+
+.health-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 14px;
+  border-radius: var(--radius-full);
+  font-family: var(--font-display);
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+}
+
+.health-badge--up {
+  background: var(--color-secondary-container);
+  color: var(--color-on-secondary-container);
+  box-shadow: 0 0 24px rgba(0, 218, 243, 0.45);
+}
+
+.health-badge--down {
+  background: var(--color-error-container);
+  color: var(--color-on-error-container);
+  box-shadow: 0 0 24px rgba(147, 0, 10, 0.45);
+}
+
+.health-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+  gap: var(--space-2);
+  margin: 0;
+}
+
+.health-metric {
+  padding: var(--space-2);
+  background: var(--color-surface-container-lowest);
+  border-radius: var(--radius-md);
+}
+
+.health-metric dt {
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-on-surface-variant);
+}
+
+.health-metric dd {
+  margin: 4px 0 0;
+  font-family: var(--font-body);
+  font-size: 1.125rem;
+  color: var(--color-on-surface);
+}
+
+.health-loading {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0;
+  font-family: var(--font-body);
+  color: var(--color-on-surface-variant);
+}
+
+.health-spinner {
+  width: 1.25rem;
+  height: 1.25rem;
+  border: 2px solid var(--color-outline-variant);
+  border-top-color: var(--color-secondary-container);
+  border-radius: var(--radius-full);
+  animation: health-spin 0.8s linear infinite;
+}
+
+.health-error {
+  margin: 0;
+  font-family: var(--font-body);
+  color: var(--color-error);
+}
+
+@keyframes health-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .health-spinner {
+    animation: none;
+  }
+}
