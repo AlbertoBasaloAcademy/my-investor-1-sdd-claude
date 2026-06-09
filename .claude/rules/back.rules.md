@@ -1,6 +1,6 @@
 ---
 description: Code rules for the back container of AstroBookings
-paths: "back/src/**/*.java"
+paths: ["back/src/**/*.java"]
 ---
 # Back code rules — AstroBookings
 
