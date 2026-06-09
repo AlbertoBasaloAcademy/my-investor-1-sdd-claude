@@ -1,0 +1,154 @@
+.launch-manifest {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background: #1a1a2e;
+  border-radius: 8px;
+  color: #e0e0e0;
+}
+
+.launch-manifest-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.launch-manifest-header h2 {
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.launch-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.launch-table th,
+.launch-table td {
+  padding: 0.6rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid #2e2e4e;
+}
+
+.launch-table th {
+  font-weight: 600;
+  color: #aaa;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+}
+
+.launch-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.launch-status {
+  display: inline-block;
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.launch-status-created {
+  background: #1e3a5f;
+  color: #93c5fd;
+}
+
+.launch-status-confirmed {
+  background: #14532d;
+  color: #86efac;
+}
+
+.launch-status-completed {
+  background: #374151;
+  color: #d1d5db;
+}
+
+.launch-status-cancelled {
+  background: #450a0a;
+  color: #fca5a5;
+}
+
+.btn-confirm {
+  background: #14532d;
+  color: #86efac;
+  border-color: #166534;
+}
+
+.btn-confirm:hover {
+  background: #166534;
+}
+
+.btn-cancel {
+  background: #7f1d1d;
+  color: #fca5a5;
+  border-color: #7f1d1d;
+}
+
+.btn-cancel:hover {
+  background: #991b1b;
+}
+
+.launch-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: #16213e;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+}
+
+.launch-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.9rem;
+  color: #aaa;
+}
+
+.launch-form input,
+.launch-form select {
+  padding: 0.4rem 0.6rem;
+  border: 1px solid #2e2e4e;
+  border-radius: 4px;
+  background: #0f3460;
+  color: #e0e0e0;
+  font-size: 1rem;
+}
+
+.launch-form-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.launch-form-error {
+  color: #fca5a5;
+  background: #450a0a;
+  padding: 0.5rem 0.75rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+.launch-error {
+  color: #fca5a5;
+}
+
+.launch-passenger-section {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #2e2e4e;
+}
+
+.launch-passenger-section h3 {
+  margin: 0 0 1rem;
+  font-size: 1rem;
+  color: #aaa;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
