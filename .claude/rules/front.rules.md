@@ -1,6 +1,6 @@
 ---
 description: Code rules for the front container of AstroBookings
-paths: "front/src/**"
+paths: ["front/src/**"]
 ---
 # Front code rules — AstroBookings
 

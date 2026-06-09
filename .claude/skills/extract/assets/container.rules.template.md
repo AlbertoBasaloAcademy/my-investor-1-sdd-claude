@@ -1,6 +1,6 @@
 ---
 description: Code rules for the {container} container of {Product_Name}
-paths: "{source_glob}"
+paths: ["{source_glob}"]
 ---
 # {Container_Name} code rules — {Product_Name}
 
