@@ -34,7 +34,7 @@ C4Container
 ### Containers table
 | Container | Technology | Responsibility |
 |-----------|------------|----------------|
-| [front](./../front.arch.md) | React 19, TypeScript, Vite | SPA — rockets, launches, bookings UI |
+| [front](./front.arch.md) | React 19, TypeScript, Vite | SPA — rockets, launches, bookings UI |
 | [back](./back.arch.md) | Java 21, Spring Boot 3.5, Spring Data JPA | REST API — business logic, data access |
 | [db](./../db.arch.md) | SQLite (embedded) | Persistent file-based data store |
 | [e2e](./../e2e.arch.md) | Playwright | End-to-end browser test suite |
