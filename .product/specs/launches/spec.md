@@ -1,6 +1,6 @@
 ---
 slug: launches
-status: pending
+status: verified
 ---
 # Specification — Launches
 
@@ -82,16 +82,16 @@ The database must persist all launch data reliably.
 
 ### Acceptance criteria
 
-- [ ] When an operator creates a launch with valid data, the system saves it with `created` status.
-- [ ] When an operator submits a launch with a past date, the system rejects it with a validation error.
-- [ ] When an operator submits a price of zero or less, the system rejects it with a validation error.
-- [ ] When an operator confirms a launch, the status changes from `created` to `confirmed`.
-- [ ] When an operator cancels a launch, the status changes to `cancelled` and all bookings are flagged for refund.
-- [ ] When a passenger views available launches, only `confirmed` launches are displayed.
-- [ ] When an operator attempts an invalid status transition, the system returns an error.
+- [x] When an operator creates a launch with valid data, the system saves it with `created` status.
+- [x] When an operator submits a launch with a past date, the system rejects it with a validation error.
+- [x] When an operator submits a price of zero or less, the system rejects it with a validation error.
+- [x] When an operator confirms a launch, the status changes from `created` to `confirmed`.
+- [x] When an operator cancels a launch, the status changes to `cancelled` and all bookings are flagged for refund.
+- [x] When a passenger views available launches, only `confirmed` launches are displayed.
+- [x] When an operator attempts an invalid status transition, the system returns an error.
 
 ### Additional criteria
 
-- [ ] Status transitions outside the allowed sequence are blocked.
-- [ ] A launch cannot reference a non-existent rocket.
-- [ ] Minimum occupancy cannot exceed the assigned rocket's seat capacity.
+- [x] Status transitions outside the allowed sequence are blocked.
+- [x] A launch cannot reference a non-existent rocket.
+- [x] Minimum occupancy cannot exceed the assigned rocket's seat capacity.

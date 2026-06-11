@@ -1,5 +1,6 @@
 package dev.aiddbot.abjavareact.launch;
 
+import dev.aiddbot.abjavareact.booking.BookingRepository;
 import dev.aiddbot.abjavareact.rocket.Rocket;
 import dev.aiddbot.abjavareact.rocket.RocketRepository;
 import java.math.BigDecimal;
@@ -15,10 +16,12 @@ public class LaunchService {
 
   private final LaunchRepository repository;
   private final RocketRepository rocketRepository;
+  private final BookingRepository bookingRepository;
 
-  public LaunchService(LaunchRepository repository, RocketRepository rocketRepository) {
+  public LaunchService(LaunchRepository repository, RocketRepository rocketRepository, BookingRepository bookingRepository) {
     this.repository = repository;
     this.rocketRepository = rocketRepository;
+    this.bookingRepository = bookingRepository;
   }
 
   public List<LaunchResponse> findAll() {
@@ -49,7 +52,7 @@ public class LaunchService {
   public LaunchResponse confirm(String id) {
     Launch launch = findOrThrow(id);
     if (!"created".equals(launch.getStatus())) {
-      throw new IllegalArgumentException("Launch can only be confirmed from 'created' status");
+      throw new IllegalStateException("Launch can only be confirmed from 'created' status");
     }
     launch.setStatus("confirmed");
     return LaunchResponse.from(repository.save(launch));
@@ -58,10 +61,17 @@ public class LaunchService {
   public LaunchResponse cancel(String id) {
     Launch launch = findOrThrow(id);
     if (TERMINAL_STATUSES.contains(launch.getStatus())) {
-      throw new IllegalArgumentException("Launch in '" + launch.getStatus() + "' status cannot be cancelled");
+      throw new IllegalStateException("Launch in '" + launch.getStatus() + "' status cannot be cancelled");
     }
     launch.setStatus("cancelled");
-    return LaunchResponse.from(repository.save(launch));
+    LaunchResponse response = LaunchResponse.from(repository.save(launch));
+    bookingRepository.findByLaunchId(id).stream()
+        .filter(b -> "CREATED".equals(b.getStatus()))
+        .forEach(b -> {
+          b.setStatus("CANCELLED");
+          bookingRepository.save(b);
+        });
+    return response;
   }
 
   private Launch findOrThrow(String id) {
