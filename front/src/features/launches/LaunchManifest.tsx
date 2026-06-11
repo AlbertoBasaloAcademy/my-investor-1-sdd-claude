@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useLaunches } from './useLaunches';
 import { useRockets } from '../rockets/useRockets';
+import { LaunchBookings } from '../bookings/LaunchBookings';
 import type { Launch, LaunchRequest, LaunchStatus } from '../../shared/types/launch';
 import './LaunchManifest.css';
 
@@ -275,26 +276,19 @@ export function LaunchManifest() {
         {confirmedLaunches.length === 0 ? (
           <p data-testid="confirmed-launches-empty">No launches available for booking.</p>
         ) : (
-          <table className="launch-table">
-            <thead>
-              <tr>
-                <th>Rocket</th>
-                <th>Scheduled At</th>
-                <th>Price</th>
-                <th>Min. Occupancy</th>
-              </tr>
-            </thead>
-            <tbody>
-              {confirmedLaunches.map((l) => (
-                <tr key={l.id} data-testid={`available-launch-${l.id}`}>
-                  <td>{l.rocketName}</td>
-                  <td>{formatDateTime(l.scheduledAt)}</td>
-                  <td>${l.pricePerTicket.toFixed(2)}</td>
-                  <td>{l.minimumOccupancy}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <div className="confirmed-launches">
+            {confirmedLaunches.map((l) => (
+              <div key={l.id} className="confirmed-launch-card" data-testid={`available-launch-${l.id}`}>
+                <div className="confirmed-launch-info">
+                  <span>{l.rocketName}</span>
+                  <span>{formatDateTime(l.scheduledAt)}</span>
+                  <span>${l.pricePerTicket.toFixed(2)}</span>
+                  <span>Min. {l.minimumOccupancy}</span>
+                </div>
+                <LaunchBookings launchId={l.id} />
+              </div>
+            ))}
+          </div>
         )}
       </div>
     </section>

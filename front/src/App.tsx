@@ -1,6 +1,7 @@
 import { HealthStatus } from './features/health/HealthStatus';
 import { RocketFleet } from './features/rockets/RocketFleet';
 import { LaunchManifest } from './features/launches/LaunchManifest';
+import { MyBookings } from './features/bookings/MyBookings';
 import './App.css';
 
 function App() {
@@ -10,6 +11,7 @@ function App() {
       <HealthStatus />
       <RocketFleet />
       <LaunchManifest />
+      <MyBookings />
     </main>
   );
 }
