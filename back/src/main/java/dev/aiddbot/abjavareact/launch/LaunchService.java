@@ -1,5 +1,6 @@
 package dev.aiddbot.abjavareact.launch;
 
+import dev.aiddbot.abjavareact.booking.Booking;
 import dev.aiddbot.abjavareact.booking.BookingRepository;
 import dev.aiddbot.abjavareact.rocket.Rocket;
 import dev.aiddbot.abjavareact.rocket.RocketRepository;
@@ -8,11 +9,12 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class LaunchService {
 
-  private static final Set<String> TERMINAL_STATUSES = Set.of("completed", "cancelled");
+  private static final Set<String> TERMINAL_STATUSES = Set.of(Launch.STATUS_COMPLETED, Launch.STATUS_CANCELLED);
 
   private final LaunchRepository repository;
   private final RocketRepository rocketRepository;
@@ -37,7 +39,7 @@ public class LaunchService {
 
   public LaunchResponse update(String id, LaunchRequest request) {
     Launch launch = findOrThrow(id);
-    if (!"created".equals(launch.getStatus())) {
+    if (!Launch.STATUS_CREATED.equals(launch.getStatus())) {
       throw new IllegalArgumentException("Only launches in 'created' status can be updated");
     }
     Rocket rocket = resolveRocket(request.rocketId());
@@ -51,26 +53,26 @@ public class LaunchService {
 
   public LaunchResponse confirm(String id) {
     Launch launch = findOrThrow(id);
-    if (!"created".equals(launch.getStatus())) {
+    if (!Launch.STATUS_CREATED.equals(launch.getStatus())) {
       throw new IllegalStateException("Launch can only be confirmed from 'created' status");
     }
-    launch.setStatus("confirmed");
+    launch.setStatus(Launch.STATUS_CONFIRMED);
     return LaunchResponse.from(repository.save(launch));
   }
 
+  @Transactional
   public LaunchResponse cancel(String id) {
     Launch launch = findOrThrow(id);
     if (TERMINAL_STATUSES.contains(launch.getStatus())) {
       throw new IllegalStateException("Launch in '" + launch.getStatus() + "' status cannot be cancelled");
     }
-    launch.setStatus("cancelled");
+    launch.setStatus(Launch.STATUS_CANCELLED);
     LaunchResponse response = LaunchResponse.from(repository.save(launch));
-    bookingRepository.findByLaunchId(id).stream()
-        .filter(b -> "CREATED".equals(b.getStatus()))
-        .forEach(b -> {
-          b.setStatus("CANCELLED");
-          bookingRepository.save(b);
-        });
+    List<Booking> activeBookings = bookingRepository.findByLaunchId(id).stream()
+        .filter(b -> Booking.STATUS_CREATED.equals(b.getStatus()))
+        .toList();
+    activeBookings.forEach(b -> b.setStatus(Booking.STATUS_CANCELLED));
+    bookingRepository.saveAll(activeBookings);
     return response;
   }
 

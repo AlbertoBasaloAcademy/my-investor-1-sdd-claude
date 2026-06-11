@@ -16,6 +16,11 @@ import java.time.LocalDateTime;
 @Table(name = "launch")
 public class Launch {
 
+  public static final String STATUS_CREATED = "created";
+  public static final String STATUS_CONFIRMED = "confirmed";
+  public static final String STATUS_COMPLETED = "completed";
+  public static final String STATUS_CANCELLED = "cancelled";
+
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
   private String id;
@@ -44,7 +49,7 @@ public class Launch {
     this.scheduledAt = scheduledAt;
     this.pricePerTicket = pricePerTicket;
     this.minimumOccupancy = minimumOccupancy;
-    this.status = "created";
+    this.status = STATUS_CREATED;
   }
 
   public String getId() {

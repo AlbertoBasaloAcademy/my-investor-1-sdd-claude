@@ -13,18 +13,12 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-  @ExceptionHandler(RocketNotFoundException.class)
-  public ResponseEntity<Map<String, String>> handleNotFound(RocketNotFoundException ex) {
-    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", ex.getMessage()));
-  }
-
-  @ExceptionHandler(LaunchNotFoundException.class)
-  public ResponseEntity<Map<String, String>> handleNotFound(LaunchNotFoundException ex) {
-    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", ex.getMessage()));
-  }
-
-  @ExceptionHandler(BookingNotFoundException.class)
-  public ResponseEntity<Map<String, String>> handleNotFound(BookingNotFoundException ex) {
+  @ExceptionHandler({
+      RocketNotFoundException.class,
+      LaunchNotFoundException.class,
+      BookingNotFoundException.class
+  })
+  public ResponseEntity<Map<String, String>> handleNotFound(RuntimeException ex) {
     return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", ex.getMessage()));
   }
 

@@ -4,10 +4,13 @@ import dev.aiddbot.abjavareact.launch.Launch;
 import dev.aiddbot.abjavareact.launch.LaunchNotFoundException;
 import dev.aiddbot.abjavareact.launch.LaunchRepository;
 import java.util.List;
+import java.util.regex.Pattern;
 import org.springframework.stereotype.Service;
 
 @Service
 public class BookingService {
+
+  private static final Pattern EMAIL_FORMAT = Pattern.compile("^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$");
 
   private final BookingRepository repository;
   private final LaunchRepository launchRepository;
@@ -18,6 +21,7 @@ public class BookingService {
   }
 
   public BookingResponse createBooking(BookingRequest request) {
+    validate(request);
     if (repository.existsByLaunchIdAndPassengerEmail(request.launchId(), request.passengerEmail())) {
       throw new IllegalStateException("Duplicate booking");
     }
@@ -30,10 +34,10 @@ public class BookingService {
   public BookingResponse cancelBooking(Long id) {
     Booking booking = repository.findById(id)
         .orElseThrow(() -> new BookingNotFoundException(id));
-    if (!"CREATED".equals(booking.getStatus())) {
+    if (!Booking.STATUS_CREATED.equals(booking.getStatus())) {
       throw new IllegalStateException("Booking already cancelled");
     }
-    booking.setStatus("CANCELLED");
+    booking.setStatus(Booking.STATUS_CANCELLED);
     return BookingResponse.from(repository.save(booking));
   }
 
@@ -43,5 +47,20 @@ public class BookingService {
 
   public List<BookingResponse> getBookingsByEmail(String email) {
     return repository.findByPassengerEmail(email).stream().map(BookingResponse::from).toList();
+  }
+
+  private void validate(BookingRequest request) {
+    if (request.launchId() == null || request.launchId().isBlank()) {
+      throw new IllegalArgumentException("Launch is required");
+    }
+    if (request.passengerName() == null || request.passengerName().isBlank()) {
+      throw new IllegalArgumentException("Passenger name is required");
+    }
+    if (request.passengerEmail() == null || !EMAIL_FORMAT.matcher(request.passengerEmail()).matches()) {
+      throw new IllegalArgumentException("Passenger email must be a valid email address");
+    }
+    if (request.passengerPhone() == null || request.passengerPhone().isBlank()) {
+      throw new IllegalArgumentException("Passenger phone is required");
+    }
   }
 }

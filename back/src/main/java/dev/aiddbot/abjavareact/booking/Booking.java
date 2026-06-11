@@ -17,6 +17,9 @@ import jakarta.persistence.UniqueConstraint;
 })
 public class Booking {
 
+  public static final String STATUS_CREATED = "CREATED";
+  public static final String STATUS_CANCELLED = "CANCELLED";
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
@@ -35,7 +38,7 @@ public class Booking {
   private String passengerPhone;
 
   @Column(nullable = false)
-  private String status = "CREATED";
+  private String status = STATUS_CREATED;
 
   protected Booking() {
   }
