@@ -84,15 +84,15 @@ The database must persist booking records with all required fields and support t
 
 ### Acceptance criteria
 
-- [ ] When a passenger submits a valid booking form, the system creates a booking with status `CREATED` and returns it.
-- [ ] When a passenger attempts to book the same launch twice with the same email, the system rejects the second request with an error.
-- [ ] When a passenger cancels a `CREATED` booking, the system updates its status to `CANCELLED`.
-- [ ] When a passenger attempts to cancel a `CANCELLED` booking, the system rejects the request with an error.
-- [ ] When an operator views a launch, the system displays all bookings for that launch with passenger details and statuses.
-- [ ] When a passenger views their bookings, the system lists all their reservations across all launches.
+- [x] When a passenger submits a valid booking form, the system creates a booking with status `CREATED` and returns it.
+- [x] When a passenger attempts to book the same launch twice with the same email, the system rejects the second request with an error.
+- [x] When a passenger cancels a `CREATED` booking, the system updates its status to `CANCELLED`.
+- [x] When a passenger attempts to cancel a `CANCELLED` booking, the system rejects the request with an error.
+- [x] When an operator views a launch, the system displays all bookings for that launch with passenger details and statuses.
+- [x] When a passenger views their bookings, the system lists all their reservations across all launches.
 
 ### Additional criteria
 
-- [ ] Booking form validates that name, email, and phone are present before submission.
-- [ ] Email field is validated as a properly formatted email address.
-- [ ] Cancelled bookings remain visible in the passenger's booking list with a `CANCELLED` label.
+- [x] Booking form validates that name, email, and phone are present before submission.
+- [x] Email field is validated as a properly formatted email address.
+- [x] Cancelled bookings remain visible in the passenger's booking list with a `CANCELLED` label.

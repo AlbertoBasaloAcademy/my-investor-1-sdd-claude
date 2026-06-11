@@ -11,15 +11,15 @@ End-to-end flows for the bookings feature: a passenger books a launch, views the
 **Context**: [spec.md](.product/specs/bookings/spec.md)
 
 ### Acceptance criteria under test
-- [ ] When a passenger submits a valid booking form, the system creates a booking with status `CREATED` and returns it.
-- [ ] When a passenger attempts to book the same launch twice with the same email, the system rejects the second request with an error.
-- [ ] When a passenger cancels a `CREATED` booking, the system updates its status to `CANCELLED`.
-- [ ] When a passenger attempts to cancel a `CANCELLED` booking, the system rejects the request with an error.
-- [ ] When an operator views a launch, the system displays all bookings for that launch with passenger details and statuses.
-- [ ] When a passenger views their bookings, the system lists all their reservations across all launches.
-- [ ] Booking form validates that name, email, and phone are present before submission.
-- [ ] Email field is validated as a properly formatted email address.
-- [ ] Cancelled bookings remain visible in the passenger's booking list with a `CANCELLED` label.
+- [x] When a passenger submits a valid booking form, the system creates a booking with status `CREATED` and returns it.
+- [x] When a passenger attempts to book the same launch twice with the same email, the system rejects the second request with an error.
+- [x] When a passenger cancels a `CREATED` booking, the system updates its status to `CANCELLED`.
+- [x] When a passenger attempts to cancel a `CANCELLED` booking, the system rejects the request with an error.
+- [x] When an operator views a launch, the system displays all bookings for that launch with passenger details and statuses.
+- [x] When a passenger views their bookings, the system lists all their reservations across all launches.
+- [x] Booking form validates that name, email, and phone are present before submission.
+- [x] Email field is validated as a properly formatted email address.
+- [x] Cancelled bookings remain visible in the passenger's booking list with a `CANCELLED` label.
 
 ---
 
@@ -101,12 +101,12 @@ Create the Playwright spec file and shared fixtures (a confirmed launch for book
 
 ## Execution
 
-- [ ] Start backend: `cd back && mvnw.cmd spring-boot:run`
-- [ ] Start frontend: `cd front && npm run dev`
-- [ ] Run the e2e suite: `cd e2e && npm test`
+- [x] Start backend: `cd back && mvnw.cmd spring-boot:run`
+- [x] Start frontend: `cd front && npm run dev`
+- [x] Run the e2e suite: `cd e2e && npm test`
 - [ ] Stop both servers after the run.
 
 ## Defects report
 
-- [ ] Write `.product/specs/bookings/e2e.report.md` listing each defect found: scenario, expected vs actual, affected container, severity.
-- [ ] Mark each acceptance criterion `[x]` in this plan and in `spec.md` when its tests pass, `[ ]` otherwise.
+- [x] Write `.product/specs/bookings/e2e.report.md` listing each defect found: scenario, expected vs actual, affected container, severity.
+- [x] Mark each acceptance criterion `[x]` in this plan and in `spec.md` when its tests pass, `[ ]` otherwise.
