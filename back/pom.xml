@@ -13,7 +13,7 @@
 
     <groupId>dev.aiddbot</groupId>
     <artifactId>ab-java-react-back</artifactId>
-    <version>0.1.0</version>
+    <version>0.2.0</version>
     <name>ab-java-react-back</name>
     <description>Spring Boot REST API for the ab-java-react archetype</description>
 

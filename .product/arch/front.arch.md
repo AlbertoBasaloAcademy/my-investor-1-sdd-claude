@@ -23,18 +23,22 @@ C4Component
     Component(health, "HealthStatus", "Feature component", "Displays API health and uptime")
     Component(rockets, "RocketFleet", "Feature component", "CRUD for rockets; register, edit, decommission")
     Component(launches, "LaunchManifest", "Feature component", "Schedule, confirm, cancel launches; booking view")
-    Component(hooks, "Custom hooks", "State manager", "useHealth / useRockets / useLaunches — loading, error, data, actions")
-    Component(apiSvcs, "API services", "HTTP adapter", "healthApi / rocketsApi / launchesApi — wrap httpClient")
+    Component(bookings, "Bookings", "Feature components", "BookingForm + LaunchBookings (manifest per launch) + MyBookings (passenger view)")
+    Component(hooks, "Custom hooks", "State manager", "useHealth / useRockets / useLaunches / useBookings / useMyBookings — loading, error, data, actions")
+    Component(apiSvcs, "API services", "HTTP adapter", "healthApi / rocketsApi / launchesApi / bookingsApi — wrap httpClient")
     Component(httpClient, "httpClient", "HTTP utility", "Generic fetch wrapper; reads VITE_API_BASE_URL")
-    Component(types, "shared/types", "Type definitions", "Domain interfaces: Health, Rocket, Launch")
+    Component(types, "shared/types", "Type definitions", "Domain interfaces: Health, Rocket, Launch, Booking")
   }
 
   Rel(app, health, "renders")
   Rel(app, rockets, "renders")
   Rel(app, launches, "renders")
+  Rel(app, bookings, "renders MyBookings")
+  Rel(launches, bookings, "renders LaunchBookings")
   Rel(health, hooks, "calls useHealth")
   Rel(rockets, hooks, "calls useRockets")
   Rel(launches, hooks, "calls useLaunches / useRockets")
+  Rel(bookings, hooks, "calls useBookings / useMyBookings")
   Rel(hooks, apiSvcs, "calls API service methods")
   Rel(apiSvcs, httpClient, "delegates HTTP")
   Rel(hooks, types, "types state")
@@ -48,7 +52,7 @@ C4Component
 ```text
 front/src/
 ├── main.tsx              # React root — StrictMode mount
-├── App.tsx               # Root composition — renders three feature components
+├── App.tsx               # Root composition — renders four feature components
 ├── index.css             # Global design tokens (CSS custom properties, dark theme)
 ├── shared/
 │   ├── api/
@@ -56,7 +60,8 @@ front/src/
 │   └── types/
 │       ├── health.ts     # Health domain interfaces
 │       ├── rocket.ts     # Rocket + RocketRequest interfaces
-│       └── launch.ts     # Launch + LaunchRequest interfaces + LaunchStatus union
+│       ├── launch.ts     # Launch + LaunchRequest interfaces + LaunchStatus union
+│       └── booking.ts    # Booking + BookingRequest interfaces + BookingStatus union
 └── features/
     ├── health/           # Read-only system status
     │   ├── HealthStatus.tsx
@@ -68,10 +73,17 @@ front/src/
     │   ├── useRockets.ts
     │   ├── rocketsApi.ts
     │   └── *.test.{ts,tsx}
-    └── launches/         # Launch scheduling + booking view
-        ├── LaunchManifest.tsx
-        ├── useLaunches.ts
-        ├── launchesApi.ts
+    ├── launches/         # Launch scheduling + booking view
+    │   ├── LaunchManifest.tsx
+    │   ├── useLaunches.ts
+    │   ├── launchesApi.ts
+    │   └── *.test.{ts,tsx}
+    └── bookings/         # Seat reservations
+        ├── BookingForm.tsx     # Passenger details form (name, email, phone)
+        ├── LaunchBookings.tsx  # Per-launch manifest + book action (rendered by LaunchManifest)
+        ├── MyBookings.tsx      # Passenger view by email + cancel action (rendered by App)
+        ├── useBookings.ts / useMyBookings.ts
+        ├── bookingsApi.ts
         └── *.test.{ts,tsx}
 ```
 
@@ -89,8 +101,14 @@ front/src/
 | `PUT /api/launches/:id` | body: `LaunchRequest` → `Launch` | consumes |
 | `PATCH /api/launches/:id/confirm` | `void` | consumes |
 | `PATCH /api/launches/:id/cancel` | `void` | consumes |
+| `POST /api/bookings` | body: `BookingRequest` → `Booking` | consumes |
+| `POST /api/bookings/:id/cancel` | `Booking` | consumes |
+| `GET /api/bookings?launchId=…` | `Booking[]` | consumes |
+| `GET /api/bookings?email=…` | `Booking[]` | consumes |
 | `useRockets()` | `{ rockets, error, isLoading, create, update, decommission }` | exposes (hook) |
 | `useLaunches()` | `{ launches, error, isLoading, schedule, update, confirm, cancel }` | exposes (hook) |
+| `useBookings(launchId)` | `{ bookings, error, isLoading, create, cancel }` | exposes (hook) |
+| `useMyBookings(email)` | `{ bookings, error, isLoading, cancel }` | exposes (hook) |
 
 ---
 
@@ -111,10 +129,17 @@ interface Launch  { id: string; rocketId: string; rocketName: string; scheduledA
 interface LaunchRequest { rocketId: string; scheduledAt: string;
                           pricePerTicket: number; minimumOccupancy: number; }
 
+// booking.ts
+type BookingStatus = 'CREATED' | 'CANCELLED';
+interface Booking  { id: number; launchId: string; passengerName: string;
+                     passengerEmail: string; passengerPhone: string; status: BookingStatus; }
+interface BookingRequest { launchId: string; passengerName: string;
+                           passengerEmail: string; passengerPhone: string; }
+
 // health.ts
 type Status = 'UP' | 'DOWN';
 interface HealthResponse { status: Status; database: Status;
                            uptime: { seconds: number }; timestamp: string; }
 ```
 
-> last updated: 2026-06-09
+> last updated: 2026-06-11

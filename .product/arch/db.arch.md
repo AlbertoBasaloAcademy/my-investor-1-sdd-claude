@@ -4,7 +4,7 @@
 
 ## Overview
 
-The `db` container is an embedded SQLite file database (`data/app.db`), created and migrated automatically by Hibernate JPA from entity definitions in the `back` container. It persists all domain data: rockets, launches, and health-check records. There are no standalone DDL or migration files — the schema lives entirely in JPA `@Entity` classes.
+The `db` container is an embedded SQLite file database (`data/app.db`), created and migrated automatically by Hibernate JPA from entity definitions in the `back` container. It persists all domain data: rockets, launches, bookings, and health-check records. There are no standalone DDL or migration files — the schema lives entirely in JPA `@Entity` classes.
 
 - **Folder**: `data/` (runtime-generated, not in source control)
 - **Archetype**: SQLite — embedded file database
@@ -21,10 +21,12 @@ C4Component
   Container_Boundary(boundary, "db") {
     Component(rocket_tbl, "rocket", "Table", "Operator-registered rockets with capacity and range")
     Component(launch_tbl, "launch", "Table", "Scheduled launches: rocket, date, price, occupancy, status")
+    Component(booking_tbl, "booking", "Table", "Passenger seat reservations with contact details and status")
     Component(health_tbl, "health_check", "Table", "API health probe log records")
   }
 
   Rel(launch_tbl, rocket_tbl, "rocket_id FK")
+  Rel(booking_tbl, launch_tbl, "launch_id FK")
 ```
 
 ### Code organization
@@ -38,6 +40,7 @@ data/
 back/src/main/java/…/
 ├── rocket/Rocket.java                              # defines table: rocket
 ├── launch/Launch.java                              # defines table: launch
+├── booking/Booking.java                            # defines table: booking
 └── health/HealthCheck.java                         # defines table: health_check
 ```
 
@@ -73,6 +76,19 @@ back/src/main/java/…/
 | `minimum_occupancy` | INTEGER | NOT NULL |
 | `status` | TEXT | NOT NULL, default `'created'` |
 
+### `booking`
+
+| Column | Type | Constraints |
+|--------|------|-------------|
+| `id` | INTEGER | PK, auto-increment |
+| `launch_id` | TEXT | NOT NULL, FK → `launch.id` |
+| `passenger_name` | TEXT | NOT NULL |
+| `passenger_email` | TEXT | NOT NULL |
+| `passenger_phone` | TEXT | NOT NULL |
+| `status` | TEXT | NOT NULL, `'CREATED'` on insert |
+
+> Unique constraint on (`launch_id`, `passenger_email`) — a passenger may not book the same launch twice. Rows are never hard-deleted; cancellation is a status change.
+
 ### `health_check`
 
 | Column | Type | Constraints |
@@ -83,4 +99,4 @@ back/src/main/java/…/
 | `uptime_seconds` | INTEGER | NOT NULL |
 | `checked_at` | TEXT | NOT NULL |
 
-> last updated: 2026-06-09
+> last updated: 2026-06-11

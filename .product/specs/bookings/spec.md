@@ -1,6 +1,7 @@
 ---
 slug: bookings
-status: pending
+status: done
+released-version: 0.2.0
 ---
 # Specification — Bookings management
 

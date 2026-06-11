@@ -66,6 +66,14 @@ back/src/main/java/dev/aiddbot/abjavareact/
 │   ├── LaunchResponse.java        # Response DTO (record)
 │   ├── LaunchController.java      # Controller
 │   └── LaunchNotFoundException.java
+├── booking/                       # Bookings feature
+│   ├── Booking.java               # Entity
+│   ├── BookingRepository.java     # Repository
+│   ├── BookingService.java        # Service
+│   ├── BookingRequest.java        # Request DTO (record)
+│   ├── BookingResponse.java       # Response DTO (record)
+│   ├── BookingController.java     # Controller
+│   └── BookingNotFoundException.java
 └── shared/
     ├── CorsConfig.java            # CORS for /api/**
     └── GlobalExceptionHandler.java # @RestControllerAdvice
@@ -85,6 +93,12 @@ back/src/main/java/dev/aiddbot/abjavareact/
 | `PUT /api/launches/{id}` | `LaunchRequest → LaunchResponse` | exposes |
 | `POST /api/launches/{id}/confirm` | `→ LaunchResponse` | exposes |
 | `POST /api/launches/{id}/cancel` | `→ LaunchResponse` | exposes |
+| `POST /api/bookings` | `BookingRequest → BookingResponse (201)` | exposes |
+| `POST /api/bookings/{id}/cancel` | `→ BookingResponse` | exposes |
+| `GET /api/bookings?launchId={id}` | `→ List<BookingResponse>` | exposes |
+| `GET /api/bookings?email={email}` | `→ List<BookingResponse>` | exposes |
+
+> Error mapping (`GlobalExceptionHandler`): `*NotFoundException` → 404, `IllegalArgumentException` → 400, `IllegalStateException` → 409 (invalid state transition or duplicate booking), `DataIntegrityViolationException` → 409.
 
 ---
 
@@ -109,6 +123,12 @@ back/src/main/java/dev/aiddbot/abjavareact/
 | | `price_per_ticket` | DECIMAL | > 0 |
 | | `minimum_occupancy` | INT | > 0 and ≤ rocket.capacity |
 | | `status` | VARCHAR | `created \| confirmed \| cancelled \| completed` |
+| `booking` | `id` | BIGINT | PK, auto-increment |
+| | `launch_id` | VARCHAR | FK → launch.id, NOT NULL |
+| | `passenger_name` | VARCHAR | NOT NULL |
+| | `passenger_email` | VARCHAR | NOT NULL, UNIQUE with `launch_id` |
+| | `passenger_phone` | VARCHAR | NOT NULL |
+| | `status` | VARCHAR | `CREATED \| CANCELLED` |
 
 ### Launch status transitions
 
@@ -119,4 +139,13 @@ confirmed ──cancel──→ cancelled
 completed / cancelled  (terminal — no transitions allowed)
 ```
 
-> last updated: 2026-06-09
+### Booking status transitions
+
+```
+CREATED ──cancel──→ CANCELLED
+CANCELLED  (terminal — cancelling again → 409)
+```
+
+> Cancelling a launch cascades: all its `CREATED` bookings transition to `CANCELLED`. Cancelled bookings are never deleted.
+
+> last updated: 2026-06-11
