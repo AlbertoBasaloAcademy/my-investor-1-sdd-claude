@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
+import dev.aiddbot.abjavareact.booking.BookingRepository;
 import dev.aiddbot.abjavareact.rocket.Rocket;
 import dev.aiddbot.abjavareact.rocket.RocketRepository;
 import java.math.BigDecimal;
@@ -25,6 +26,9 @@ class LaunchServiceTest {
 
   @Mock
   private RocketRepository rocketRepository;
+
+  @Mock
+  private BookingRepository bookingRepository;
 
   @InjectMocks
   private LaunchService service;
@@ -119,8 +123,8 @@ class LaunchServiceTest {
         Optional.of(launchWithId("L1", rocket, FUTURE, PRICE, 3, "confirmed")));
 
     assertThatThrownBy(() -> service.confirm("L1"))
-        .isInstanceOf(IllegalArgumentException.class)
-        .hasMessageContaining("confirmed");
+        .isInstanceOf(IllegalStateException.class)
+        .hasMessageContaining("created");
   }
 
   @Test
@@ -142,7 +146,7 @@ class LaunchServiceTest {
         Optional.of(launchWithId("L1", rocket, FUTURE, PRICE, 3, "cancelled")));
 
     assertThatThrownBy(() -> service.cancel("L1"))
-        .isInstanceOf(IllegalArgumentException.class)
+        .isInstanceOf(IllegalStateException.class)
         .hasMessageContaining("cancelled");
   }
 
