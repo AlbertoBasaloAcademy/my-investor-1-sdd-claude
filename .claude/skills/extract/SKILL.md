@@ -2,7 +2,7 @@
 name: extract
 description: Document one container in depth — C4 L3 components + container code rules. Greenfield prescribes; brownfield extracts.
 user-invocable: true
-disable-model-invocation: true
+disable-model-invocation: false
 ---
 
 # Extract skill

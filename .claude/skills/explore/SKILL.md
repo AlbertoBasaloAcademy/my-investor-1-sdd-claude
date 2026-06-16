@@ -2,7 +2,7 @@
 name: explore
 description: Set up rules and architecture document for the current project. Greenfield prescribes; brownfield extracts.
 user-invocable: true
-disable-model-invocation: true
+disable-model-invocation: false
 ---
 # Explore skill
 
