@@ -1,50 +1,65 @@
 ---
 name: codify
-description: Generate code for a requirement or feature. 
+description: Implement one container plan with working functional code plus unit tests for critical modules. One run, one container.
 user-invocable: true
 disable-model-invocation: true
 ---
-# Codify skill 
 
-Write code to implement a feature
+# Codify skill
 
 ## Role
-Act as a software engineer with expertise in coding requirements and features.
+Senior software engineer.
 
 ## Task
-Implement the requirement or feature according to the specification, plan or requirement. 
-Include unit tests for critical modules.
-
-Do not write e2e tests or documentation at this stage.
+Implement a container plan (or a scoped spec/requirement) with working code plus unit tests for critical modules. One run, one container.
 
 ## Context
-
 ### Input
-One of the following inputs:
+- One of:
+  - A container Plan file `{Product_Folder}/specs/{slug}/{container}.plan.md`.
+  - A Spec file or a direct textual requirement (best-effort; ask which container to scope).
 
-- An implementation plan with the steps and tasks required.
-- A specification file with a feature definition.
-- A request made by the user with a concrete requirement.
-- If the input is incomplete or unclear, ask for additional details before proceeding.
+### Prerequisites
+- `{Product_Folder}/arch/system.arch.md` (run `/explore` if missing);
+- The relevant container documents (run `/extract` if missing):
+  - architecture document `{Product_Folder}/arch/{container}.arch.md`
+  - container code rules document `{Agents_Folder}/rules/{container}.rules.md`
+
+### Guardrails
+1. **Think first** — reason about the problem; clarify when in doubt.
+2. **Simplicity** — no clever or over-engineered solutions (YAGNI, KISS).
+3. **Surgical changes** — minimum changes to meet the goal.
+4. **Goal-driven** — keep going until validation criteria are met.
 
 ## Steps
-### Step 1: Think before coding
-- Reason about the problem and ask the user for clarification if needed.
+### Step 1: Scope
+- [ ] Identify the input and derive `{slug}` and `{container}`.
+- [ ] If the input is a spec or requirement (not a single container plan), ask which container to scope. Do not assume.
+- [ ] Never the `e2e` container — its plan and code belong to `/verify`.
+- [ ] If the scope is large, split it into smaller ordered units and do them in order.
 
-### Step 2: Simplicity first
-- Avoid complex, clever, or over-engineered solutions (YAGNI).
+### Step 2: Ground in the container
+- [ ] Read `{container}.arch.md` (components, contracts, structure) and `{container}.rules.md` (naming, conventions).
 
-### Step 3: Surgical changes
-- Write the minimum amount of code necessary to solve the problem.
+### Step 3: Implement
+- [ ] Write the minimum code to meet the in-scope plan steps; follow the container's rules and conventions.
+- [ ] Respect the contracts shared with sibling containers (API shapes, schemas) as planned.
+- [ ] If an in-scope change would alter a shared contract, stop and hand back to `/planify` — never improvise a cross-container change.
+- [ ] Annotate any deviation from the plan in the plan file (what changed and why).
+- [ ] Do not add comments or extra changes (YAGNI).
 
-### Step 4: Goal-driven execution
-- Keep working until all specified verification steps are successfully completed.
-  
+### Step 4: Unit test
+- [ ] Add unit tests for the critical path: happy path plus error cases (if any).
+- [ ] Run the container's unit suite; fix until green.
+
 ## Output
-- Working code that fulfills the requirements.
-- Unit tests for critical modules.
+- [ ] Working code + unit tests; every in-scope plan step checked `[x]`.
+- [ ] In `spec.md`, set `status: in-progress` if still `pending` (building has started).
+- [ ] Commit: `{feat|fix|test}(scope): {description}`.
+- [ ] Suggest handoff:
+  - `/codify` for the remaining container plans.
+  - `/verify` the `e2e.plan.md` once all containers are codified.
 
 ## Verification
-- [ ] Code compiles without errors.
-- [ ] Unit test pass.
-- [ ] Smoke test pass (app or servers start).
+- [ ] Code builds and unit tests pass.
+- [ ] Every step in the plan is completed.

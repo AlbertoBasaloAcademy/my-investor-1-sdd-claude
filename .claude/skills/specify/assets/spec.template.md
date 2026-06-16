@@ -1,6 +1,9 @@
 ---
 slug: {slug}
-status: pending | in-progress | done
+status: pending # chain: pending (specified) → in-progress (first /codify) → done (released)
+# Maintenance links — omit when absent:
+# amends: {old-slug} # this spec changes a released feature (context comes from /modify)
+# superseded-by: {new-slug} # stamped by /release when an amending spec ships
 ---
 # Specification — {short description}
 
@@ -12,31 +15,23 @@ status: pending | in-progress | done
 
 - As a {role}, I want to **{goal}** so that {benefit}.
 
-### Business rules
-
-- {Business rule 1}
-
 ## Solution overview
 
 > Expected results only — outcomes, not implementation. `/planify` turns these into steps per container.
+> Functional containers only — no `e2e` section here; verification is captured by the acceptance criteria.
 
 ### Data Model
 
-{Mermaid diagram of the feature's subset of the system-wide model in `system.arch.md`.}
+{Conceptual entities and relationships involved in this feature; no schema or field-level detail.}
 
 ### {Container_Name}
 
 {What this container must deliver for the feature, per `system.arch.md`.}
 
-- {An observable outcome this container provides in non-technical language.}
+- {Expected result — an observable outcome this container provides.}
+- {Expected result}
 
-## Verification
-
-### Acceptance criteria
+## Acceptance and Release
 
 - [ ] {EARS-format acceptance criterion}
-
-### Additional criteria
-
-- [ ] {Additional criteria 1}
-
+- [ ] {Additional criterion}
