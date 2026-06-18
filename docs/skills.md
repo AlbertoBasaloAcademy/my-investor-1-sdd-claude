@@ -7,6 +7,7 @@
   - [From OpenAI](https://github.com/openai/skills)
   - [From Addy Osmani](https://github.com/addyosmani/agent-skills)
   - [From Matt Pocock](https://github.com/mattpocock/skills)
+  - [From Builder IO](https://github.com/BuilderIO/skills)
 
 - and... [The Find Skills skill](https://skills.sh/vercel-labs/skills/find-skills)
 
